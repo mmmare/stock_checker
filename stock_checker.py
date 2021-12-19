@@ -1,4 +1,3 @@
-import pandas as pd
 import requests
 import re
 import logging
@@ -6,7 +5,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 logging.basicConfig(filename='app.log',filemode='a',format='%(asctime)s - %(message)s',level=logging.INFO,  datefmt='%Y-%m-%d %H:%M:%S')
-models  = ['RTX 6800','RTX 3080','RTX 6700']
+models  = ['RTX 6800','RTX 3080','RTX 6700','GT1030']
 now = datetime.now()
 now_formatted = now.strftime("%Y%m%d_%H%M%S")
 
@@ -37,8 +36,10 @@ try:
         price  = []
         for i in price_div:
             price.append(pattern.match(i.text)[0])
-        df = pd.DataFrame({"model_name":model_name,"Price":price,"Available":available})
-        df.to_csv('results//'+model+'_'+now_formatted+'.csv')
+        for (a,b,c) in zip(model_name,price,available):
+            if 'Add to Cart' in c:
+                print(c)
+
 except Exception as e:
     logging.error(e)
 
